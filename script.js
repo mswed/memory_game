@@ -13,7 +13,8 @@ const COLORS = [
   "purple"
 ];
 
-let flippedCards = []
+let flippedCards = [];
+let allowFlipping = true;
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -60,35 +61,43 @@ function createDivsForColors(colorArray) {
   }
 }
 
-// TODO: Implement this function!
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
-  console.log("you just clicked", event.target);
+  // console.log("you just clicked", event.target);
 
   // Flip the card
-  if (flippedCards.length < 2) { // We don't have enough flipped cards. Keep flipping. 
-    event.target.classList.add(event.target.dataset.color)
-    flippedCards.push(event.target)
+  if (flippedCards.length < 2) { // We don't have enough flipped cards. Keep flipping.  
+    // console.log('flipping!')
+    if (!flippedCards.includes(event.target) && !event.target.dataset.matched === true) {
+      // The card has not been flipped yet. Flip it. 
+      flippedCards.push(event.target)
+      event.target.classList.add(event.target.dataset.color)
+      // console.log('Flipped', event.target.dataset.color)
+      console.log('flipped', flippedCards)
+    }
   }
-  if (flippedCards.length === 2) { // We have enough cards. Check if they match
-    console.log('We have two cards!')
+  if (flippedCards.length === 2 && allowFlipping) { // We have enough cards
+    // Don't allow further flips
+    allowFlipping = false;
     // Check if cards are a match
     if (flippedCards[0].className === flippedCards[1].className) {
-      console.log('We have a match!')
+      // Mark cards as flipped
+      for (let card of flippedCards) { card.dataset.matched = true; }
+      // Reset the counter
+      flippedCards = [];
+      allowFlipping = true;
     } else {
-      console.log('We DO NOT have a match!')
       const mismatchedCards = flippedCards
-      setTimeout(function() {
-        console.log('Reseting cards')
-        for (let card of mismatchedCards) {
-          console.log(card)
-          card.className = ''
-        }
+      setTimeout(function () {
+        for (let card of mismatchedCards) { card.className = '' }
+
+        // Reset the counter
+        flippedCards = [];
+        allowFlipping = true;
+
+        console.log('reset', flippedCards)
       }, 1000)
     }
-    // Reset the counter
-    flippedCards = []
-
   }
 }
 
