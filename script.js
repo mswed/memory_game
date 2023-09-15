@@ -13,6 +13,8 @@ const COLORS = [
   "purple"
 ];
 
+let flippedCards = []
+
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
 // it is based on an algorithm called Fisher Yates if you want ot research more
@@ -47,7 +49,8 @@ function createDivsForColors(colorArray) {
     const newDiv = document.createElement("div");
 
     // give it a class attribute for the value we are looping over
-    newDiv.classList.add(color);
+    newDiv.dataset.color = color;
+    // newDiv.classList.add(color);
 
     // call a function handleCardClick when a div is clicked on
     newDiv.addEventListener("click", handleCardClick);
@@ -61,6 +64,32 @@ function createDivsForColors(colorArray) {
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
   console.log("you just clicked", event.target);
+
+  // Flip the card
+  if (flippedCards.length < 2) { // We don't have enough flipped cards. Keep flipping. 
+    event.target.classList.add(event.target.dataset.color)
+    flippedCards.push(event.target)
+  }
+  if (flippedCards.length === 2) { // We have enough cards. Check if they match
+    console.log('We have two cards!')
+    // Check if cards are a match
+    if (flippedCards[0].className === flippedCards[1].className) {
+      console.log('We have a match!')
+    } else {
+      console.log('We DO NOT have a match!')
+      const mismatchedCards = flippedCards
+      setTimeout(function() {
+        console.log('Reseting cards')
+        for (let card of mismatchedCards) {
+          console.log(card)
+          card.className = ''
+        }
+      }, 1000)
+    }
+    // Reset the counter
+    flippedCards = []
+
+  }
 }
 
 // when the DOM loads
