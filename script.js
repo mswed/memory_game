@@ -1,4 +1,5 @@
 const gameContainer = document.getElementById("game");
+const startBtn = document.querySelector('#start')
 
 const COLORS = [
   "red",
@@ -45,6 +46,8 @@ let shuffledColors = shuffle(COLORS);
 // it creates a new div and gives it a class with the value of the color
 // it also adds an event listener for a click for each card
 function createDivsForColors(colorArray) {
+  // Start a new game
+  startBtn.remove()
   for (let color of colorArray) {
     // create a new div
     const newDiv = document.createElement("div");
@@ -101,5 +104,9 @@ function handleCardClick(event) {
   }
 }
 
+
 // when the DOM loads
-createDivsForColors(shuffledColors);
+startBtn.addEventListener('click', function(e) {
+  createDivsForColors(shuffledColors)
+})
+// createDivsForColors(shuffledColors);

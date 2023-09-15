@@ -6,6 +6,18 @@
   display: inline-block;
 }
 
+h1 {
+  text-align: center;
+}
+
+body {
+  background-color: #F2D8D8;
+}
+#start {
+  text-align: center;
+  color: red;
+  font-size: 10rem;
+}
 .green {
   background-color: green;
 }
