@@ -1,20 +1,27 @@
+#game {
+  background-color: #F2D8D8;
+  padding: 10rem 0;
+}
 #game div {
   border: 1px solid black;
-  width: 15%;
-  height: 200px;
+  width: 10%;
+  height: 300px;
   margin: 10px;
   display: inline-block;
+  
 }
 
-h1 {
-  text-align: center;
+h1.flex-box {
+  display: flex;
+  justify-content: space-between;
 }
 
 body {
-  background-color: #F2D8D8;
+  background-color: #5C8984;
 }
 #start {
   text-align: center;
+  margin: auto;
   color: red;
   font-size: 10rem;
 }
