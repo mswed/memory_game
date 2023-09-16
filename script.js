@@ -3,8 +3,9 @@ const startBtn = document.querySelector('#start')
 const reloadBtn = document.querySelector('h1 i')
 let scoreDisplay = document.querySelector('#score')
 let numberOfCards = document.querySelector('h1 input')
+let cardsType = document.querySelector('#cardsType')
 
-const COLORS = [
+const DEFAULT_COLORS = [
   "red",
   "blue",
   "green",
@@ -16,6 +17,8 @@ let flippedCards = [];
 let allowFlipping = true;
 let score = 0
 let allFlippedCards = 0
+let inGameColors = []
+
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -42,12 +45,20 @@ function shuffle(array) {
 
 function createDeck(num) {
   deck = []
+  
   for (i = 0; i <= (num / 2) - 1; i++) {
-    console.log(`Number of cards ${num / 2}`)
-    console.log('i', i)
-    let index = Math.floor(Math.random() * COLORS.length)
-    deck.push(COLORS[index])
-    deck.push(COLORS[index])
+    let index = Math.floor(Math.random() * DEFAULT_COLORS.length)
+    console.log(cardsType.value)
+    if (cardsType.value === 'color') {
+      deck.push(DEFAULT_COLORS[index])
+      deck.push(DEFAULT_COLORS[index])
+    } else if (cardsType.value === 'random color') {
+      randomColor = Math.floor(Math.random()*16777215).toString(16);
+      deck.push(`#${randomColor}`)
+      deck.push(`#${randomColor}`)
+      inGameColors.push(`#${randomColor}`)
+    }
+    
   }
   console.log(deck)
   return deck;
@@ -87,8 +98,7 @@ function handleCardClick(event) {
     if (!flippedCards.includes(event.target) && !event.target.dataset.matched === true) {
       // The card has not been flipped yet. Flip it. 
       flippedCards.push(event.target)
-      event.target.classList.add(event.target.dataset.color)
-      // console.log('Flipped', event.target.dataset.color)
+      event.target.style.backgroundColor = event.target.dataset.color
       console.log('flipped', flippedCards)
     }
   }
@@ -96,7 +106,7 @@ function handleCardClick(event) {
     // Don't allow further flips
     allowFlipping = false;
     // Check if cards are a match
-    if (flippedCards[0].className === flippedCards[1].className) { // Cards are a match!
+    if (flippedCards[0].style.backgroundColor === flippedCards[1].style.backgroundColor) { // Cards are a match!
       // Mark cards as flipped
       for (let card of flippedCards) { card.dataset.matched = true; }
 
@@ -105,7 +115,7 @@ function handleCardClick(event) {
 
       // Count flips
       allFlippedCards += 2
-      if (COLORS.length === allFlippedCards) {
+      if (DEFAULT_COLORS.length * 2 === allFlippedCards) {
         endGame()
       }
 
@@ -113,7 +123,7 @@ function handleCardClick(event) {
     } else { // Cards are note a match
       const mismatchedCards = flippedCards
       setTimeout(function () {
-        for (let card of mismatchedCards) { card.className = '' }
+        for (let card of mismatchedCards) { card.style.backgroundColor = '' }
 
         // Reset the counter
         flippedCards = [];
@@ -151,15 +161,12 @@ function endGame() {
 
 }
 function startGame(options) {
-
-  console.log('###>', options)
-  if (options) {
+  if (options) { // We are starting a game with options
     // Check how many cards we need to make
     if (numberOfCards.value === '') { // The user didn't pick. Default to 10.
       numberOfCards.value = 10
     }
-    console.group(numberOfCards.value)
-    if (numberOfCards.value % 2 !== 0) {
+    if (numberOfCards.value % 2 !== 0) { // We have an odd number of cards
       alert('Please pick an even number of cards!');
       numberOfCards.value = 10;
       return;
@@ -167,9 +174,11 @@ function startGame(options) {
   }
 
   // Clear the game
-  clear()
+  clear();
 
   createDivsForColors(createDeck(numberOfCards.value))
+
+  // Set defaults
   allFlippedCards = 0
   score = 0
   scoreDisplay.innerText = `Score: ${score}`
@@ -183,4 +192,3 @@ startBtn.addEventListener('click', function() {startGame(true)})
 reloadBtn.addEventListener('click', function() {
   startGame(false)
 } )
-// createDivsForColors(shuffledColors);

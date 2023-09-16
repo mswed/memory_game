@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Memory Game!</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://kit.fontawesome.com/dc953bf743.js" crossorigin="anonymous"></script>
-    
-  </head>
-  <body >
-    <h1 class="flex-box">Memory Game <span id="score">Score: 0</span><i class="fa-solid fa-arrows-rotate"></i></h1>
-    <div id="game">
-      <h1 class="options">Play with a deck of <span><input type="text" placeholder="10"></span><span><select name="cardsType" id="cardsType">
-        <option value="Now">color</option>
-                <option value="Next">random color</option>
-                <option value="Future">image</option>
-      </select></span><span>cards</span></h1>
-      <h1 id="start">Start Game!</h1>
-    </div>
-    <script src="script.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Memory Game!</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/dc953bf743.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <h1 class="flex-box">Memory Game <span id="score">Score: 0</span><i class="fa-solid fa-arrows-rotate"></i></h1>
+  <div id="game">
+    <h1 class="options">Play with a deck of <span><input type="text" placeholder="10"></span><span><select
+          name="cardsType" id="cardsType">
+          <option value="color">color</option>
+          <option value="random color">random color</option>
+          <option value="image">image</option>
+        </select></span><span>cards</span></h1>
+    <h1 id="start">Start Game!</h1>
+  </div>
+  <script src="script.js"></script>
+</body>
+
 </html>
