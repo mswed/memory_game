@@ -1,6 +1,7 @@
 const gameContainer = document.getElementById("game");
 const startBtn = document.querySelector('#start')
 const reloadBtn = document.querySelector('h1 i')
+let scoreDisplay = document.querySelector('#score')
 
 const COLORS = [
   "red",
@@ -17,6 +18,7 @@ const COLORS = [
 
 let flippedCards = [];
 let allowFlipping = true;
+let score = 0
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -69,7 +71,8 @@ function createDivsForColors() {
 function handleCardClick(event) {
   // you can use event.target to see which element was clicked
   // console.log("you just clicked", event.target);
-
+  score++
+  scoreDisplay.innerText = `Score: ${score}`
   // Flip the card
   if (flippedCards.length < 2) { // We don't have enough flipped cards. Keep flipping.  
     // console.log('flipping!')
