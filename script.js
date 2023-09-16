@@ -1,9 +1,15 @@
 const gameContainer = document.getElementById("game");
-const startBtn = document.querySelector('#start')
-const reloadBtn = document.querySelector('h1 i')
-let scoreDisplay = document.querySelector('#score')
-let numberOfCards = document.querySelector('h1 input')
-let cardsType = document.querySelector('#cardsType')
+const startBtn = document.querySelector('#start');
+const reloadBtn = document.querySelector('h1 i');
+let scoreDisplay = document.querySelector('#score');
+let numberOfCards = document.querySelector('h1 input');
+let cardsType = document.querySelector('#cardsType');
+
+let flippedCards = [];
+let allowFlipping = true;
+let score = 0;
+let allFlippedCards = 0;
+let inGameColors = [];
 
 const DEFAULT_COLORS = [
   "red",
@@ -21,15 +27,9 @@ const IMAGES = [
   'images/Major_Monogram_MM.png',
   'images/Profile_-_Isabella_Garcia-Shapiro.png',
   'images/Thereyouare.png'
-]
-const backOfCard = 'https://img.myloview.com/canvas-prints/a-playing-card-reverse-back-in-black-and-white-from-a-new-modern-original-complete-full-deck-design-standard-poker-size-400-139133369.jpg'
+];
 
-let flippedCards = [];
-let allowFlipping = true;
-let score = 0
-let allFlippedCards = 0
-let inGameColors = []
-
+const backOfCard = 'https://img.myloview.com/canvas-prints/a-playing-card-reverse-back-in-black-and-white-from-a-new-modern-original-complete-full-deck-design-standard-poker-size-400-139133369.jpg';
 
 
 // here is a helper function to shuffle an array
@@ -56,11 +56,11 @@ function shuffle(array) {
 }
 
 function createDeck(num) {
-  deck = []
+  deck = [];
 
   for (i = 0; i <= (num / 2) - 1; i++) {
-    let index = Math.floor(Math.random() * DEFAULT_COLORS.length)
-    let color = ''
+    let index = Math.floor(Math.random() * DEFAULT_COLORS.length);
+    let color = '';
     if (cardsType.value === 'color') {
       color = DEFAULT_COLORS[index];
 
@@ -71,13 +71,12 @@ function createDeck(num) {
     } else {
       let index = Math.floor(Math.random() * IMAGES.length)
       color = IMAGES[index]
-    }
-    deck.push(color)
-    deck.push(color)
-    inGameColors.push(color)
+    };
+    deck.push(color);
+    deck.push(color);
+    inGameColors.push(color);
 
   }
-  console.log(deck)
   return deck;
 }
 
@@ -94,8 +93,8 @@ function createDivsForColors(d) {
 
     // give it a class attribute for the value we are looping over
     newDiv.dataset.color = color;
-    newDiv.style.backgroundImage = `url(${backOfCard})`
-    newDiv.className = 'container'
+    newDiv.style.backgroundImage = `url(${backOfCard})`;
+    newDiv.className = 'container';
 
     // call a function handleCardClick when a div is clicked on
     newDiv.addEventListener("click", handleCardClick);
@@ -158,26 +157,26 @@ function handleCardClick(event) {
 }
 
 function clear() {
-  let first = gameContainer.firstElementChild
+  let first = gameContainer.firstElementChild;
   while (first) {
-    first.remove()
-    first = gameContainer.firstElementChild
+    first.remove();
+    first = gameContainer.firstElementChild;
   }
 
 }
 function endGame() {
-  clear()
-  const done = document.createElement('h1')
-  done.id = 'start'
-  done.innerText = 'ALL DONE!'
-  gameContainer.append(done)
+  clear();
+  const done = document.createElement('h1');
+  done.id = 'start';
+  done.innerText = 'ALL DONE!';
+  gameContainer.append(done);
 
 
   if (score < localStorage.getItem('memoryGameScore')) {
-    localStorage.setItem('memoryGameScore', score)
-    const newRecord = document.createElement('h2')
-    newRecord.innerText = `New Score: ${score}`
-    gameContainer.append(newRecord)
+    localStorage.setItem('memoryGameScore', score);
+    const newRecord = document.createElement('h2');
+    newRecord.innerText = `New Score: ${score}`;
+    gameContainer.append(newRecord);
   }
 
 
@@ -186,7 +185,7 @@ function startGame(options) {
   if (options) { // We are starting a game with options
     // Check how many cards we need to make
     if (numberOfCards.value === '') { // The user didn't pick. Default to 10.
-      numberOfCards.value = 10
+      numberOfCards.value = 10;
     }
     if (numberOfCards.value % 2 !== 0) { // We have an odd number of cards
       alert('Please pick an even number of cards!');
@@ -198,19 +197,19 @@ function startGame(options) {
   // Clear the game
   clear();
 
-  createDivsForColors(createDeck(numberOfCards.value))
+  createDivsForColors(createDeck(numberOfCards.value));
 
   // Set defaults
-  allFlippedCards = 0
-  score = 0
-  scoreDisplay.innerText = `SCORE: ${score}`
+  allFlippedCards = 0;
+  score = 0;
+  scoreDisplay.innerText = `SCORE: ${score}`;
   if (!localStorage.getItem('memoryGameScore')) {
-    localStorage.setItem('memoryGameScore', 10000)
+    localStorage.setItem('memoryGameScore', 10000);
   }
 }
 // when the DOM loads
-startBtn.addEventListener('click', function () { startGame(true) })
+startBtn.addEventListener('click', function () { startGame(true) });
 
 reloadBtn.addEventListener('click', function () {
-  startGame(false)
-})
+  startGame(false);
+});
