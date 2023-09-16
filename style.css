@@ -16,6 +16,23 @@ h1.flex-box {
   justify-content: space-between;
 }
 
+.options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+input {
+  border: none;
+  background-color: #F2D8D8;
+  width: 25px;
+}
+
+select {
+  border: none;
+  background-color: #F2D8D8;
+}
+
 body {
   background-color: #5C8984;
 }

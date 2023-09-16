@@ -2,6 +2,7 @@ const gameContainer = document.getElementById("game");
 const startBtn = document.querySelector('#start')
 const reloadBtn = document.querySelector('h1 i')
 let scoreDisplay = document.querySelector('#score')
+let numberOfCards = document.querySelector('h1 input')
 
 const COLORS = [
   "red",
@@ -9,11 +10,6 @@ const COLORS = [
   "green",
   "orange",
   "purple",
-  "red",
-  "blue",
-  "green",
-  "orange",
-  "purple"
 ];
 
 let flippedCards = [];
@@ -44,14 +40,25 @@ function shuffle(array) {
   return array;
 }
 
-
+function createDeck(num) {
+  deck = []
+  for (i = 0; i <= (num / 2) - 1; i++) {
+    console.log(`Number of cards ${num / 2}`)
+    console.log('i', i)
+    let index = Math.floor(Math.random() * COLORS.length)
+    deck.push(COLORS[index])
+    deck.push(COLORS[index])
+  }
+  console.log(deck)
+  return deck;
+}
 
 // this function loops over the array of colors
 // it creates a new div and gives it a class with the value of the color
 // it also adds an event listener for a click for each card
-function createDivsForColors() {
+function createDivsForColors(d) {
   // Start a new game
-  let colorArray = shuffle(COLORS);
+  let colorArray = shuffle(d);
 
   for (let color of colorArray) {
     // create a new div
@@ -143,9 +150,26 @@ function endGame() {
 
 
 }
-function startGame() {
+function startGame(options) {
+
+  console.log('###>', options)
+  if (options) {
+    // Check how many cards we need to make
+    if (numberOfCards.value === '') { // The user didn't pick. Default to 10.
+      numberOfCards.value = 10
+    }
+    console.group(numberOfCards.value)
+    if (numberOfCards.value % 2 !== 0) {
+      alert('Please pick an even number of cards!');
+      numberOfCards.value = 10;
+      return;
+    }
+  }
+
+  // Clear the game
   clear()
-  createDivsForColors()
+
+  createDivsForColors(createDeck(numberOfCards.value))
   allFlippedCards = 0
   score = 0
   scoreDisplay.innerText = `Score: ${score}`
@@ -154,7 +178,9 @@ function startGame() {
   }
 }
 // when the DOM loads
-startBtn.addEventListener('click', startGame)
+startBtn.addEventListener('click', function() {startGame(true)})
 
-reloadBtn.addEventListener('click', startGame)
+reloadBtn.addEventListener('click', function() {
+  startGame(false)
+} )
 // createDivsForColors(shuffledColors);
