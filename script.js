@@ -105,8 +105,11 @@ function createDivsForColors(d) {
 }
 
 function handleCardClick(event) {
-  score++
-  scoreDisplay.innerText = `SCORE: ${score}`
+  if (allowFlipping) {
+    score++
+    scoreDisplay.innerText = `SCORE: ${score}`
+  }
+
   // Flip the card
   if (flippedCards.length < 2) { // We don't have enough flipped cards. Keep flipping.  
     if (!flippedCards.includes(event.target) && !event.target.dataset.matched === true) {
@@ -178,7 +181,6 @@ function endGame() {
     newRecord.innerText = `New Score: ${score}`;
     gameContainer.append(newRecord);
   }
-
 
 }
 function startGame(options) {
