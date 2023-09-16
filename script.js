@@ -14,13 +14,13 @@ const DEFAULT_COLORS = [
 ];
 
 const IMAGES = [
-  'https://static.wikia.nocookie.net/p__/images/8/81/Phineas_hey.png/revision/latest?cb=20180621140405&path-prefix=protagonist',
-  'https://static.wikia.nocookie.net/p__/images/1/12/Thereyouare.png/revision/latest?cb=20120802045838&path-prefix=protagonist',
-  'https://static.wikia.nocookie.net/p__/images/b/ba/Ferb_Fletcher.png/revision/latest?cb=20111127184754&path-prefix=protagonist',
-  'https://static.wikia.nocookie.net/p__/images/6/6a/Candace_Flynn.png/revision/latest?cb=20180808205018&path-prefix=protagonist',
-  'https://static.wikia.nocookie.net/p__/images/e/ed/Heinz_Doofenshmirtz_5.png/revision/latest?cb=20200804230400&path-prefix=protagonist',
-  'https://static.wikia.nocookie.net/p__/images/c/c9/Major_Monogram_MM.png/revision/latest?cb=20160115212218&path-prefix=protagonist',
-  'https://static.wikia.nocookie.net/phineasandferb/images/8/8c/Profile_-_Isabella_Garcia-Shapiro.PNG/revision/latest?cb=20200401182003'
+  'images/Phineas_hey.png',
+  'images/Candace_Flynn.png',
+  'images/Ferb_Fletcher.png',
+  'images/Heinz_Doofenshmirtz_5.png',
+  'images/Major_Monogram_MM.png',
+  'images/Profile_-_Isabella_Garcia-Shapiro.png',
+  'images/Thereyouare.png'
 ]
 const backOfCard = 'https://img.myloview.com/canvas-prints/a-playing-card-reverse-back-in-black-and-white-from-a-new-modern-original-complete-full-deck-design-standard-poker-size-400-139133369.jpg'
 
@@ -57,26 +57,25 @@ function shuffle(array) {
 
 function createDeck(num) {
   deck = []
-  
+
   for (i = 0; i <= (num / 2) - 1; i++) {
     let index = Math.floor(Math.random() * DEFAULT_COLORS.length)
-    console.log(cardsType.value)
+    let color = ''
     if (cardsType.value === 'color') {
-      deck.push(DEFAULT_COLORS[index])
-      deck.push(DEFAULT_COLORS[index])
-      inGameColors.push(DEFAULT_COLORS[index])
+      color = DEFAULT_COLORS[index];
+
     } else if (cardsType.value === 'random color') {
-      randomColor = Math.floor(Math.random()*16777215).toString(16);
-      deck.push(`#${randomColor}`)
-      deck.push(`#${randomColor}`)
-      inGameColors.push(`#${randomColor}`)
+      randomColor = Math.floor(Math.random() * 16777215).toString(16);
+      color = `#${randomColor}`
+
     } else {
       let index = Math.floor(Math.random() * IMAGES.length)
-      deck.push(IMAGES[index])
-      deck.push(IMAGES[index])
-      inGameColors.push(IMAGES[index])
+      color = IMAGES[index]
     }
-    
+    deck.push(color)
+    deck.push(color)
+    inGameColors.push(color)
+
   }
   console.log(deck)
   return deck;
@@ -107,17 +106,14 @@ function createDivsForColors(d) {
 }
 
 function handleCardClick(event) {
-  // you can use event.target to see which element was clicked
-  // console.log("you just clicked", event.target);
   score++
   scoreDisplay.innerText = `SCORE: ${score}`
   // Flip the card
   if (flippedCards.length < 2) { // We don't have enough flipped cards. Keep flipping.  
-    // console.log('flipping!')
     if (!flippedCards.includes(event.target) && !event.target.dataset.matched === true) {
       // The card has not been flipped yet. Flip it. 
       flippedCards.push(event.target)
-      if (event.target.dataset.color.startsWith('http')) {
+      if (event.target.dataset.color.startsWith('images')) {
         event.target.style.backgroundImage = `url("${event.target.dataset.color}")`;
         event.target.style.backgroundColor = 'white'
       } else {
@@ -148,7 +144,7 @@ function handleCardClick(event) {
     } else { // Cards are not a match
       const mismatchedCards = flippedCards
       setTimeout(function () {
-        for (let card of mismatchedCards) { 
+        for (let card of mismatchedCards) {
           card.style.backgroundColor = '';
           card.style.backgroundImage = `url(${backOfCard})`;
         }
@@ -156,8 +152,6 @@ function handleCardClick(event) {
         // Reset the counter
         flippedCards = [];
         allowFlipping = true;
-
-        console.log('reset', flippedCards)
       }, 1000)
     }
   }
@@ -175,7 +169,7 @@ function endGame() {
   clear()
   const done = document.createElement('h1')
   done.id = 'start'
-  done.innerText = 'All done!'
+  done.innerText = 'ALL DONE!'
   gameContainer.append(done)
 
 
@@ -215,8 +209,8 @@ function startGame(options) {
   }
 }
 // when the DOM loads
-startBtn.addEventListener('click', function() {startGame(true)})
+startBtn.addEventListener('click', function () { startGame(true) })
 
-reloadBtn.addEventListener('click', function() {
+reloadBtn.addEventListener('click', function () {
   startGame(false)
-} )
+})
