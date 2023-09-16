@@ -215,3 +215,4 @@ startBtn.addEventListener('click', function () { startGame(true) });
 reloadBtn.addEventListener('click', function () {
   startGame(false);
 });
+
