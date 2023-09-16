@@ -105,7 +105,8 @@ function createDivsForColors(d) {
 }
 
 function handleCardClick(event) {
-  if (allowFlipping) {
+  // Update the score
+  if (allowFlipping && !flippedCards.includes(event.target)) {
     score++
     scoreDisplay.innerText = `SCORE: ${score}`
   }
