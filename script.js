@@ -13,11 +13,23 @@ const DEFAULT_COLORS = [
   "purple",
 ];
 
+const IMAGES = [
+  'https://static.wikia.nocookie.net/p__/images/8/81/Phineas_hey.png/revision/latest?cb=20180621140405&path-prefix=protagonist',
+  'https://static.wikia.nocookie.net/p__/images/1/12/Thereyouare.png/revision/latest?cb=20120802045838&path-prefix=protagonist',
+  'https://static.wikia.nocookie.net/p__/images/b/ba/Ferb_Fletcher.png/revision/latest?cb=20111127184754&path-prefix=protagonist',
+  'https://static.wikia.nocookie.net/p__/images/6/6a/Candace_Flynn.png/revision/latest?cb=20180808205018&path-prefix=protagonist',
+  'https://static.wikia.nocookie.net/p__/images/e/ed/Heinz_Doofenshmirtz_5.png/revision/latest?cb=20200804230400&path-prefix=protagonist',
+  'https://static.wikia.nocookie.net/p__/images/c/c9/Major_Monogram_MM.png/revision/latest?cb=20160115212218&path-prefix=protagonist',
+  'https://static.wikia.nocookie.net/phineasandferb/images/8/8c/Profile_-_Isabella_Garcia-Shapiro.PNG/revision/latest?cb=20200401182003'
+]
+const backOfCard = 'https://img.myloview.com/canvas-prints/a-playing-card-reverse-back-in-black-and-white-from-a-new-modern-original-complete-full-deck-design-standard-poker-size-400-139133369.jpg'
+
 let flippedCards = [];
 let allowFlipping = true;
 let score = 0
 let allFlippedCards = 0
 let inGameColors = []
+
 
 
 // here is a helper function to shuffle an array
@@ -52,11 +64,17 @@ function createDeck(num) {
     if (cardsType.value === 'color') {
       deck.push(DEFAULT_COLORS[index])
       deck.push(DEFAULT_COLORS[index])
+      inGameColors.push(DEFAULT_COLORS[index])
     } else if (cardsType.value === 'random color') {
       randomColor = Math.floor(Math.random()*16777215).toString(16);
       deck.push(`#${randomColor}`)
       deck.push(`#${randomColor}`)
       inGameColors.push(`#${randomColor}`)
+    } else {
+      let index = Math.floor(Math.random() * IMAGES.length)
+      deck.push(IMAGES[index])
+      deck.push(IMAGES[index])
+      inGameColors.push(IMAGES[index])
     }
     
   }
@@ -77,7 +95,8 @@ function createDivsForColors(d) {
 
     // give it a class attribute for the value we are looping over
     newDiv.dataset.color = color;
-    // newDiv.classList.add(color);
+    newDiv.style.backgroundImage = `url(${backOfCard})`
+    newDiv.className = 'container'
 
     // call a function handleCardClick when a div is clicked on
     newDiv.addEventListener("click", handleCardClick);
@@ -91,22 +110,28 @@ function handleCardClick(event) {
   // you can use event.target to see which element was clicked
   // console.log("you just clicked", event.target);
   score++
-  scoreDisplay.innerText = `Score: ${score}`
+  scoreDisplay.innerText = `SCORE: ${score}`
   // Flip the card
   if (flippedCards.length < 2) { // We don't have enough flipped cards. Keep flipping.  
     // console.log('flipping!')
     if (!flippedCards.includes(event.target) && !event.target.dataset.matched === true) {
       // The card has not been flipped yet. Flip it. 
       flippedCards.push(event.target)
-      event.target.style.backgroundColor = event.target.dataset.color
-      console.log('flipped', flippedCards)
+      if (event.target.dataset.color.startsWith('http')) {
+        event.target.style.backgroundImage = `url("${event.target.dataset.color}")`;
+        event.target.style.backgroundColor = 'white'
+      } else {
+        event.target.style.backgroundColor = event.target.dataset.color
+        event.target.style.backgroundImage = ''
+
+      }
     }
   }
   if (flippedCards.length === 2 && allowFlipping) { // We have enough cards
     // Don't allow further flips
     allowFlipping = false;
     // Check if cards are a match
-    if (flippedCards[0].style.backgroundColor === flippedCards[1].style.backgroundColor) { // Cards are a match!
+    if (flippedCards[0].dataset.color === flippedCards[1].dataset.color) { // Cards are a match!
       // Mark cards as flipped
       for (let card of flippedCards) { card.dataset.matched = true; }
 
@@ -115,15 +140,18 @@ function handleCardClick(event) {
 
       // Count flips
       allFlippedCards += 2
-      if (DEFAULT_COLORS.length * 2 === allFlippedCards) {
-        endGame()
+      if (inGameColors.length * 2 === allFlippedCards) {
+        setTimeout(endGame, 1000)
       }
 
       allowFlipping = true;
-    } else { // Cards are note a match
+    } else { // Cards are not a match
       const mismatchedCards = flippedCards
       setTimeout(function () {
-        for (let card of mismatchedCards) { card.style.backgroundColor = '' }
+        for (let card of mismatchedCards) { 
+          card.style.backgroundColor = '';
+          card.style.backgroundImage = `url(${backOfCard})`;
+        }
 
         // Reset the counter
         flippedCards = [];
@@ -154,7 +182,7 @@ function endGame() {
   if (score < localStorage.getItem('memoryGameScore')) {
     localStorage.setItem('memoryGameScore', score)
     const newRecord = document.createElement('h2')
-    newRecord.innerText = `Final Score: ${score}`
+    newRecord.innerText = `New Score: ${score}`
     gameContainer.append(newRecord)
   }
 
@@ -181,7 +209,7 @@ function startGame(options) {
   // Set defaults
   allFlippedCards = 0
   score = 0
-  scoreDisplay.innerText = `Score: ${score}`
+  scoreDisplay.innerText = `SCORE: ${score}`
   if (!localStorage.getItem('memoryGameScore')) {
     localStorage.setItem('memoryGameScore', 10000)
   }

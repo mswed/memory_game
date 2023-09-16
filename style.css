@@ -2,50 +2,79 @@
   background-color: #F2D8D8;
   padding: 10rem 0;
 }
+
 #game div {
   border: 1px solid black;
   width: 10%;
   height: 300px;
   margin: 10px;
   display: inline-block;
-  
+
 }
 
 h1.flex-box {
   display: flex;
   justify-content: space-between;
+  font-family: 'B612', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mooli', sans-serif;
 }
 
 .options {
   display: flex;
   justify-content: center;
   gap: 10px;
+  font-family: 'B612', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mooli', sans-serif;
 }
 
 input {
   border: none;
   background-color: #F2D8D8;
-  width: 25px;
+  width: 40px;
+  font-family: 'B612', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mooli', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 select {
   border: none;
   background-color: #F2D8D8;
+  font-family: 'B612', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mooli', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 body {
   background-color: #5C8984;
 }
+
 #start {
   text-align: center;
   margin: auto;
-  color: #FF9B9B;
+  color: #f83b3b;
   font-size: 10rem;
+  font-family: 'B612', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mooli', sans-serif;
 }
 
 h2 {
   text-align: center;
-  color: #CBFFA9;
+  color: #2ed101;
   font-size: 5rem;
+  font-family: 'B612', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mooli', sans-serif;
 
+}
+
+.container {
+  background-size: contain;
+  background-repeat: no-repeat;
 }
