@@ -19,6 +19,7 @@ const COLORS = [
 let flippedCards = [];
 let allowFlipping = true;
 let score = 0
+let allFlippedCards = 0
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -88,13 +89,21 @@ function handleCardClick(event) {
     // Don't allow further flips
     allowFlipping = false;
     // Check if cards are a match
-    if (flippedCards[0].className === flippedCards[1].className) {
+    if (flippedCards[0].className === flippedCards[1].className) { // Cards are a match!
       // Mark cards as flipped
       for (let card of flippedCards) { card.dataset.matched = true; }
+
       // Reset the counter
       flippedCards = [];
+
+      // Count flips
+      allFlippedCards += 2
+      if (COLORS.length === allFlippedCards) {
+        endGame()
+      }
+
       allowFlipping = true;
-    } else {
+    } else { // Cards are note a match
       const mismatchedCards = flippedCards
       setTimeout(function () {
         for (let card of mismatchedCards) { card.className = '' }
@@ -109,15 +118,40 @@ function handleCardClick(event) {
   }
 }
 
-function startGame() {
-  
+function clear() {
   let first = gameContainer.firstElementChild
   while (first) {
     first.remove()
     first = gameContainer.firstElementChild
   }
- 
+
+}
+function endGame() {
+  clear()
+  const done = document.createElement('h1')
+  done.id = 'start'
+  done.innerText = 'All done!'
+  gameContainer.append(done)
+
+
+  if (score < localStorage.getItem('memoryGameScore')) {
+    localStorage.setItem('memoryGameScore', score)
+    const newRecord = document.createElement('h2')
+    newRecord.innerText = `Final Score: ${score}`
+    gameContainer.append(newRecord)
+  }
+
+
+}
+function startGame() {
+  clear()
   createDivsForColors()
+  allFlippedCards = 0
+  score = 0
+  scoreDisplay.innerText = `Score: ${score}`
+  if (!localStorage.getItem('memoryGameScore')) {
+    localStorage.setItem('memoryGameScore', 10000)
+  }
 }
 // when the DOM loads
 startBtn.addEventListener('click', startGame)
